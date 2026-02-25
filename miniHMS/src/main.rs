@@ -19,8 +19,8 @@ impl Patient {
     
 
         match self.urgency {
-            Urgency::Low => println!("Urgency Low"),
-            Urgency::Medium => println!("Urgency Medium"),
+            Urgency::Low => println!("Urgency: Low"),
+            Urgency::Medium => println!("Urgency: Medium"),
             Urgency::High => println!("Urgency: High"),
             Urgency::Critical => println!("Urgency: Critical"),
         }
@@ -34,6 +34,7 @@ fn main() {
    //Variables to hold patient details
     let mut p_name = String::new();
     let mut p_age = String::new();
+    let mut p_decision = String::new();
 
     println!("Enter Patients name: ");
     io::stdin().read_line(&mut p_name).expect("Failed to read Patient name");
@@ -47,10 +48,31 @@ fn main() {
         println!("Cannot accept an empty field");
         return;
     } 
+
+    println!("Enter Patients condition.");
+    println!("Enter (1) Low , (2) Medium, (3) High, (4) Critical");
+    io::stdin().read_line(&mut p_decision).expect("Failed to read Urgency scale");
+        
+    let p_urgency = loop {
+       match p_decision.trim() {
+        "1" => break Urgency::Low,
+        "2" => break Urgency::Medium,
+        "3" => break Urgency::High,
+        "4" => break Urgency::Critical,
+        _ =>{
+                println!("Enter either 1, 2, 3, or 4 as specified above to choose a scale.");
+                p_decision.clear();
+                io::stdin().read_line(&mut p_decision).expect("Failed to read Urgency scale");
+        }
+    }
+ 
+    };
+    
+
     let patient_details = Patient {
-        name: p_name,
-        age: p_age,
-        urgency: Urgency::Low,
+        name: p_name.trim().to_string(),
+        age: p_age.trim().to_string(),
+        urgency: p_urgency,
     };
 
     patients.push(patient_details);
